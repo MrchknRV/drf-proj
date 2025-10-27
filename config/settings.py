@@ -39,10 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "cars.apps.CarsConfig",
+    "vehicles.apps.CarsConfig",
     "users.apps.UsersConfig",
     "materials.apps.MaterialsConfig",
 ]
+
+AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
