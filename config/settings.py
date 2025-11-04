@@ -43,7 +43,14 @@ INSTALLED_APPS = [
     "vehicles.apps.CarsConfig",
     "users.apps.UsersConfig",
     "materials.apps.MaterialsConfig",
+    "django_filters",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
+}
 
 AUTH_USER_MODEL = "users.User"
 
