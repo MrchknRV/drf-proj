@@ -1,0 +1,42 @@
+[
+{
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+        "password": "",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "Admin",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-10-31T21:31:55.168Z",
+        "email": "example@gmail.com",
+        "avatar": "",
+        "phone_number": null,
+        "country": null,
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+        "password": "",
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "Rodion",
+        "last_name": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2025-10-31T21:32:15.614Z",
+        "email": "rodionmarochkin32@gmail.com",
+        "avatar": "",
+        "phone_number": null,
+        "country": null,
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

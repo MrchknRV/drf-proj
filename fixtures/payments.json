@@ -1,0 +1,242 @@
+[
+  {
+    "model": "users.payments",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "paid_course": 1,
+      "paid_lesson": null,
+      "payment_date": "2024-01-15T10:30:00Z",
+      "payment_amount": 2500.00,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "paid_course": null,
+      "paid_lesson": 1,
+      "payment_date": "2024-01-16T14:20:00Z",
+      "payment_amount": 300.00,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "paid_course": 2,
+      "paid_lesson": null,
+      "payment_date": "2024-01-17T09:15:00Z",
+      "payment_amount": 1800.00,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 4,
+    "fields": {
+      "user": 2,
+      "paid_course": null,
+      "paid_lesson": 4,
+      "payment_date": "2023-05-30T16:45:00Z",
+      "payment_amount": 2500,
+      "payment_method": "Cash"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 5,
+    "fields": {
+      "user": 1,
+      "paid_course": 3,
+      "paid_lesson": null,
+      "payment_date": "2023-11-05T11:20:00Z",
+      "payment_amount": 22000,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 6,
+    "fields": {
+      "user": 2,
+      "paid_course": null,
+      "paid_lesson": 7,
+      "payment_date": "2024-02-14T13:10:00Z",
+      "payment_amount": 3500,
+      "payment_method": "Cash"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 7,
+    "fields": {
+      "user": 1,
+      "paid_course": 4,
+      "paid_lesson": null,
+      "payment_date": "2024-06-08T15:30:00Z",
+      "payment_amount": 15000,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 8,
+    "fields": {
+      "user": 1,
+      "paid_course": null,
+      "paid_lesson": 10,
+      "payment_date": "2024-09-18T10:00:00Z",
+      "payment_amount": 2800,
+      "payment_method": "Cash"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 9,
+    "fields": {
+      "user": 2,
+      "paid_course": 5,
+      "paid_lesson": null,
+      "payment_date": "2024-12-24T08:45:00Z",
+      "payment_amount": 32000,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 10,
+    "fields": {
+      "user": 1,
+      "paid_course": null,
+      "paid_lesson": 12,
+      "payment_date": "2025-01-07T14:55:00Z",
+      "payment_amount": 4200,
+      "payment_method": "Cash"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 11,
+    "fields": {
+      "user": 1,
+      "paid_course": 1,
+      "paid_lesson": null,
+      "payment_date": "2025-04-12T12:25:00Z",
+      "payment_amount": 27000,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 12,
+    "fields": {
+      "user": 1,
+      "paid_course": null,
+      "paid_lesson": 3,
+      "payment_date": "2025-07-30T17:40:00Z",
+      "payment_amount": 3200,
+      "payment_method": "Cash"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 13,
+    "fields": {
+      "user": 2,
+      "paid_course": 2,
+      "paid_lesson": null,
+      "payment_date": "2022-12-31T23:59:00Z",
+      "payment_amount": 19000,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 14,
+    "fields": {
+      "user": 1,
+      "paid_course": null,
+      "paid_lesson": 8,
+      "payment_date": "2023-04-01T08:00:00Z",
+      "payment_amount": 3800,
+      "payment_method": "Cash"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 15,
+    "fields": {
+      "user": 2,
+      "paid_course": 3,
+      "paid_lesson": null,
+      "payment_date": "2023-08-15T13:15:00Z",
+      "payment_amount": 24000,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 16,
+    "fields": {
+      "user": 2,
+      "paid_course": null,
+      "paid_lesson": 5,
+      "payment_date": "2024-03-08T10:30:00Z",
+      "payment_amount": 2900,
+      "payment_method": "Cash"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 17,
+    "fields": {
+      "user": 1,
+      "paid_course": 4,
+      "paid_lesson": null,
+      "payment_date": "2024-10-31T20:15:00Z",
+      "payment_amount": 16000,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 18,
+    "fields": {
+      "user": 1,
+      "paid_course": null,
+      "paid_lesson": 11,
+      "payment_date": "2025-02-28T16:20:00Z",
+      "payment_amount": 4500,
+      "payment_method": "Cash"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 19,
+    "fields": {
+      "user": 2,
+      "paid_course": 5,
+      "paid_lesson": null,
+      "payment_date": "2022-06-20T11:45:00Z",
+      "payment_amount": 35000,
+      "payment_method": "Credit Card"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 20,
+    "fields": {
+      "user": 2,
+      "paid_course": null,
+      "paid_lesson": 2,
+      "payment_date": "2023-02-14T09:10:00Z",
+      "payment_amount": 2700,
+      "payment_method": "Cash"
+    }
+  }
+]
