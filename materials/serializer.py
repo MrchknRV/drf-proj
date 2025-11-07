@@ -6,6 +6,7 @@ from users.models import Payments, User
 
 class LessonSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source="owner.username")
+
     class Meta:
         model = Lesson
 

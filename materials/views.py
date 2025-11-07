@@ -43,6 +43,7 @@ class LessonListAPIView(generics.ListAPIView):
             return Course.objects.all()
         return Course.objects.filter(owner=user)
 
+
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
