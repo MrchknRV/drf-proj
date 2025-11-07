@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from materials.models import Course, Lesson
-from users.models import User, Payments
+from users.models import Payments, User
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -26,17 +26,9 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class PaymentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
-    paid_course = CourseSerializer(read_only=True)
-    paid_lesson = LessonSerializer(read_only=True)
+    course = CourseSerializer(source="paid_course", read_only=True)
+    lesson = LessonSerializer(source="paid_lesson", read_only=True)
 
     class Meta:
         model = Payments
-        fields = (
-            "id",
-            "user",
-            "paid_course",
-            "paid_lesson",
-            "payment_amount",
-            "payment_method",
-            "payment_date"
-        )
+        fields = ("id", "user", "course", "lesson", "payment_amount", "payment_method", "payment_date")
