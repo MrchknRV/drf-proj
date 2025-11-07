@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
 import os
 from pathlib import Path
 
@@ -42,7 +43,14 @@ INSTALLED_APPS = [
     "vehicles.apps.CarsConfig",
     "users.apps.UsersConfig",
     "materials.apps.MaterialsConfig",
+    "django_filters",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
+}
 
 AUTH_USER_MODEL = "users.User"
 
@@ -147,4 +155,3 @@ CACHES = {
         "LOCATION": os.getenv("REDIS_CACHE_LOCATION"),
     }
 }
-
