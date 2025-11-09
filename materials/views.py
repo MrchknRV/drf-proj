@@ -4,7 +4,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
 from materials.models import Course, Lesson
-from materials.permissions import IsOwner, IsOwnerOrModerator
+from materials.permissions import IsOwner, IsOwnerOrModerator, IsModerator
 from materials.serializer import CourseSerializer, LessonSerializer, PaymentSerializer
 from users.models import Payments
 
@@ -26,7 +26,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, ~IsModerator]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
