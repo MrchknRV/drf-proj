@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from materials.models import Course, Lesson, Subscription
+from materials.paginators import CustomPageNumberPagination
 from materials.permissions import IsOwner, IsOwnerOrModerator, IsModerator
 from materials.serializer import CourseSerializer, LessonSerializer, PaymentSerializer
 from users.models import Payments
@@ -15,6 +16,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
     permission_classes = [IsAuthenticated, IsOwnerOrModerator]
+    pagination_class = CustomPageNumberPagination
 
     def get_queryset(self):
         user = self.request.user
@@ -38,6 +40,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwnerOrModerator]
+    pagination_class = CustomPageNumberPagination
 
     def get_queryset(self):
         user = self.request.user
