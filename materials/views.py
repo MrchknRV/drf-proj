@@ -82,7 +82,7 @@ class SubscriptionViewSet(viewsets.ViewSet):
     @action(detail=True, methods=["post"])
     def subscribe(self, request, pk=None):
         course = Course.objects.get(pk=pk)
-        _, created = Subscription.objects.get_or_create(user=request.user, cource=course)
+        _, created = Subscription.objects.get_or_create(user=request.user, course=course)
 
         if created:
             return Response({"post": "Вы успешно подписались на курс"}, status=status.HTTP_201_CREATED)
@@ -91,7 +91,7 @@ class SubscriptionViewSet(viewsets.ViewSet):
     @action(detail=True, methods=["delete"])
     def unsubscribe(self, request, pk=None):
         course = Course.objects.get(pk=pk)
-        deleted, _ = Subscription.objects.filter(user=request.user, cource=course).delete()
+        deleted, _ = Subscription.objects.filter(user=request.user, course=course).delete()
         if deleted:
             return Response(status=status.HTTP_200_OK)
         return Response({"post": "Вы не были подписаны"}, status=status.HTTP_400_BAD_REQUEST)
