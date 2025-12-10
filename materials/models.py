@@ -1,6 +1,7 @@
 from django.db import models
 
 from materials.validators import url_validator
+
 # from django.contrib.auth import get_user_model
 from users.models import User
 
@@ -39,3 +40,19 @@ class Lesson(models.Model):
         db_table = "lesson"
         verbose_name = "Урок"
         verbose_name_plural = "Уроки"
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="subscriptions")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="subscriptions")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f"{self.user.email} - {self.course.name}"
+
+    class Meta:
+        db_table = "subscription"
+        unique_together = ("user", "course")
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"

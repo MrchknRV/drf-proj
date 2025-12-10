@@ -9,25 +9,25 @@ def url_validator(value):
     if not value:
         return
 
-
     url_pattern = r'(https?://[^\s<>"\'{}|\\^`]+|www\.[^\s<>"\'{}|\\^`]+)'
     urls = re.findall(url_pattern, value, re.IGNORECASE)
 
-    acceptable_domains = ('youtube.com', 'www.youtube.com',)
+    acceptable_domains = (
+        "youtube.com",
+        "www.youtube.com",
+    )
 
     for url in urls:
 
-        if url.lower().startswith('www.'):
-            url = 'https://' + url
-        elif not url.lower().startswith(('http://', 'https://')):
-            url = 'https://' + url
+        if url.lower().startswith("www."):
+            url = "https://" + url
+        elif not url.lower().startswith(("http://", "https://")):
+            url = "https://" + url
 
         domain = urlparse(url).netloc.lower()
 
-        if domain.startswith('www.'):
+        if domain.startswith("www."):
             domain = domain[4:]
 
         if domain not in acceptable_domains:
-            raise serializers.ValidationError(
-                "В материалах разрешены только ссылки на YouTube."
-            )
+            raise serializers.ValidationError("В материалах разрешены только ссылки на YouTube.")
