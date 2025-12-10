@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from materials.models import Course, Lesson
-from users.models import Payments, User
+from users.models import Payments
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -25,8 +25,12 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         # exclude = ("preview",)
-        fields = ["name", "description", "lesson_count", "lessons"]
-        read_only_fields = ("id", "created_at", "updated_at")
+        fields = ["name", "description", "lesson_count", "lessons", "owner"]
+        read_only_fields = (
+            "id",
+            "created_at",
+            "updated_at",
+        )
 
     def get_lesson_count(self, obj):
         return obj.lessons.count()
