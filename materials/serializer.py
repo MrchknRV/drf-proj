@@ -9,9 +9,6 @@ class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-
-    class Meta:
-        model = Lesson
         # fields = ["name", "description"]
         fields = "__all__"
         read_only_fields = ("id", "created_at", "updated_at")
