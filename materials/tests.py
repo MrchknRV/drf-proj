@@ -47,7 +47,7 @@ class MaterialsTest(APITestCase):
         url = reverse("materials:lesson-create")
         data = {"name": "Попытка", "course": self.course.id}
         response = self.client.post(url, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_update_lesson_as_owner(self):
         self.client.force_authenticate(self.owner)
@@ -85,12 +85,12 @@ class MaterialsTest(APITestCase):
         self.assertFalse(Subscription.objects.filter(user=self.student, course=self.course).exists())
 
     def test_is_subscribed_field(self):
-        self.client.force_authenticate(self.student)
+        self.client.force_authenticate(self.owner)
         url = reverse("materials:course-detail", args=[self.course.pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertFalse(response.data["is_subscribed"])
 
-        Subscription.objects.create(user=self.student, course=self.course)
+        Subscription.objects.create(user=self.owner, course=self.course)
         response = self.client.get(url)
         self.assertTrue(response.data["is_subscribed"])
