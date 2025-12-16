@@ -1,16 +1,18 @@
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from rest_framework.views import APIView
+import stripe
+from django.conf import settings
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import CustomPageNumberPagination
 from materials.permissions import IsOwner, IsOwnerOrModerator, IsModerator
 from materials.serializer import CourseSerializer, LessonSerializer, PaymentSerializer
 from users.models import Payments
-
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
@@ -95,3 +97,50 @@ class SubscriptionViewSet(viewsets.ViewSet):
         if deleted:
             return Response(status=status.HTTP_200_OK)
         return Response({"post": "Вы не были подписаны"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+class StripeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        course = get_object_or_404(Course, pk=pk)
+
+        try:
+            product = stripe.Product.create(name=course.name)
+
+            price = stripe.Price.create(
+                unit_amount=100000,
+                currency="usd",
+                product=product.id,
+            )
+            #####################
+            ### Если я правильно понял, то вообще в модели Course
+            ### должна была быть параметр "price" и в параметр "unit_amount"
+            ### нужно было бы передавать "int(course.get(price, 0)) * 100"
+            #####################
+
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=["card"],
+                line_items=[
+                    {
+                        "price": price.id,
+                        "quantity": 1,
+                    },
+                ],
+                mode='payment',
+                success_url=Response({"post": "Success"}, status=status.HTTP_200_OK),
+                cancel_url=Response({"post": "Canceled"}, status=status.HTTP_205_RESET_CONTENT),
+                metadata={
+                    "course_id": course.pk,
+                    "user_id": request.user.id,
+                },
+            )
+
+            return Response({"checkout_session": checkout_session}, status=status.HTTP_200_OK)
+
+        except Exception as ex:
+            return Response({"post": str(ex)}, status=status.HTTP_400_BAD_REQUEST)

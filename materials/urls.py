@@ -16,4 +16,5 @@ urlpatterns = [
     path("lesson/delete/<int:pk>/", views.LessonDeleteAPIView.as_view(), name="lesson-delete"),
     path("lesson/<int:pk>/", views.LessonRetrieveAPIView.as_view(), name="lesson-retrieve"),
     path("payments/", views.PaymentsListAPIView.as_view(), name="payments-list"),
+    path("course/<int:pk>/pay/", views.StripeView.as_view(), name="course-pay"),
 ] + router.urls
