@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django_filters",
     "users.apps.UsersConfig",
     "materials.apps.MaterialsConfig",
+    "drf_yasg",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -163,4 +164,15 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=99999),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=99999),
+}
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
 }
