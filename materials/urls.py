@@ -7,6 +7,7 @@ app_name = "materials"
 
 router = routers.DefaultRouter()
 router.register(r"course", views.CourseViewSet, basename="course")
+router.register(r"subscription", views.SubscriptionViewSet, basename="subscription")
 
 urlpatterns = [
     path("lesson/", views.LessonListAPIView.as_view(), name="lesson-list"),
