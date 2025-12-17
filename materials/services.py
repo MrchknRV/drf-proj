@@ -24,10 +24,10 @@ def create_stripe_price(product_id, amount):
         return str(ex)
 
 
-def create_strip_session(price_id, payment_method, success_url, cancel_url, metadata):
+def create_strip_session(price_id, success_url, cancel_url, metadata):
     try:
         session = stripe.Session.create(
-            payment_method_types = [payment_method],
+            payment_method_types = ["card"],
             line_items=[{
                 "price": price_id,
                 "quantity": 1

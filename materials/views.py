@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status, serializers
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -110,9 +111,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        payment_method = "cash" if serializer.validated_data.get("payment_method") == "Cash" else "card"
         paid_course = serializer.validated_data.get("paid_course")
-        paid_amount = serializer.validated_data.get("paid_amount")
+        paid_amount = serializer.validated_data.get("payment_amount")
 
         if not paid_course or not paid_amount:
             raise serializers.ValidationError("Для оплаты необходимо выбрать курс и сумму")
@@ -121,9 +121,8 @@ class PaymentViewSet(viewsets.ModelViewSet):
             price = create_stripe_price(product.id, paid_amount)
             session = create_strip_session(
                 price_id=price.pk,
-                payment_method=payment_method,
-                success_url=Response({"post": "Success"}, status=status.HTTP_200_OK),
-                cancel_url=Response({"post": "Canceled"}, status=status.HTTP_205_RESET_CONTENT),
+                success_url="http://127.0.0.1:8000/materials/payment/success/?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url="http://127.0.0.1:8000/materials/payment/cancel/",
                 metadata={
                     "course_id": paid_course.pk,
                     "user_id": self.request.user.id,
@@ -131,9 +130,23 @@ class PaymentViewSet(viewsets.ModelViewSet):
             )
             payment = serializer.save(
                 user=self.request.user,
+                payment_method=Payments.CREDIT_CARD
             )
             payment.stripe_session_id = session.pk
             payment.save()
-            return Response({"session": session}, status=status.HTTP_200_OK)
+            return Response({"session": session}, status=status.HTTP_201_CREATED)
+        except stripe.error.StripeError as ex:
+            raise ValidationError(f"Ошибка Stripe {str(ex)}")
         except Exception as ex:
             return Response({"post": str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PaymentSuccessView(APIView):
+    def get(self, request):
+        session_id = request.GET.get("session_id")
+        return Response({"message": "Оплата прошла успешно!", "session_id": session_id})
+
+class PaymentCancelView(APIView):
+    def get(self, request):
+        session_id = request.GET.get("session_id")
+        return Response({"message": "Оплата отменена.", "session_id": session_id})
