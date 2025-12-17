@@ -35,6 +35,7 @@ class Payments(models.Model):
     )
     payment_amount = models.PositiveIntegerField(verbose_name="Сумма оплаты")
     payment_method = models.CharField(max_length=12, choices=PAYMENT_TYPE_CHOICES, default=CASH)
+    stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f"ОПЛАТА от {self.user.email}"
