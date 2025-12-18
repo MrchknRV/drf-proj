@@ -8,6 +8,7 @@ app_name = "materials"
 router = routers.DefaultRouter()
 router.register(r"course", views.CourseViewSet, basename="course")
 router.register(r"subscription", views.SubscriptionViewSet, basename="subscription")
+router.register(r"payments", views.PaymentViewSet, basename="payments")
 
 urlpatterns = [
     path("lesson/", views.LessonListAPIView.as_view(), name="lesson-list"),
@@ -16,4 +17,6 @@ urlpatterns = [
     path("lesson/delete/<int:pk>/", views.LessonDeleteAPIView.as_view(), name="lesson-delete"),
     path("lesson/<int:pk>/", views.LessonRetrieveAPIView.as_view(), name="lesson-retrieve"),
     path("payments/", views.PaymentsListAPIView.as_view(), name="payments-list"),
+    path("payment/success/", views.PaymentSuccessView.as_view()),
+    path("payment/cancel/", views.PaymentCancelView.as_view()),
 ] + router.urls

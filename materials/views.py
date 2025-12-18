@@ -1,14 +1,19 @@
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics, viewsets, status
+from rest_framework import generics, viewsets, status, serializers
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
+from rest_framework.views import APIView
+import stripe
+from django.conf import settings
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import CustomPageNumberPagination
 from materials.permissions import IsOwner, IsOwnerOrModerator, IsModerator
 from materials.serializer import CourseSerializer, LessonSerializer, PaymentSerializer
+from materials.services import create_stripe_product, create_stripe_price, create_strip_session
 from users.models import Payments
 
 
@@ -95,3 +100,53 @@ class SubscriptionViewSet(viewsets.ViewSet):
         if deleted:
             return Response(status=status.HTTP_200_OK)
         return Response({"post": "Вы не были подписаны"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+class PaymentViewSet(viewsets.ModelViewSet):
+    serializer_class = PaymentSerializer
+    queryset = Payments.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        paid_course = serializer.validated_data.get("paid_course")
+        paid_amount = serializer.validated_data.get("payment_amount")
+
+        if not paid_course or not paid_amount:
+            raise serializers.ValidationError("Для оплаты необходимо выбрать курс и сумму")
+        try:
+            product = create_stripe_product(paid_course.name)
+            price = create_stripe_price(product.id, paid_amount)
+            session = create_strip_session(
+                price_id=price.pk,
+                success_url="http://127.0.0.1:8000/materials/payment/success/?session_id={CHECKOUT_SESSION_ID}",
+                cancel_url="http://127.0.0.1:8000/materials/payment/cancel/",
+                metadata={
+                    "course_id": paid_course.pk,
+                    "user_id": self.request.user.id,
+                },
+            )
+            payment = serializer.save(
+                user=self.request.user,
+                payment_method=Payments.CREDIT_CARD
+            )
+            payment.stripe_session_id = session.pk
+            payment.save()
+            return Response({"session": session}, status=status.HTTP_201_CREATED)
+        except stripe.error.StripeError as ex:
+            raise ValidationError(f"Ошибка Stripe {str(ex)}")
+        except Exception as ex:
+            return Response({"post": str(ex)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PaymentSuccessView(APIView):
+    def get(self, request):
+        session_id = request.GET.get("session_id")
+        return Response({"message": "Оплата прошла успешно!", "session_id": session_id})
+
+class PaymentCancelView(APIView):
+    def get(self, request):
+        session_id = request.GET.get("session_id")
+        return Response({"message": "Оплата отменена.", "session_id": session_id})
