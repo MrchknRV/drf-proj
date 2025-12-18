@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics, viewsets, status, serializers
 from rest_framework.decorators import action
@@ -11,7 +10,7 @@ import stripe
 from django.conf import settings
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import CustomPageNumberPagination
-from materials.permissions import IsOwner, IsOwnerOrModerator, IsModerator
+from materials.permissions import IsOwner, IsOwnerOrModerator
 from materials.serializer import CourseSerializer, LessonSerializer, PaymentSerializer
 from materials.services import create_stripe_product, create_stripe_price, create_strip_session
 from users.models import Payments
