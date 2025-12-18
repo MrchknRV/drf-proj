@@ -1,18 +1,20 @@
+import stripe
+from django.conf import settings
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics, viewsets, status, serializers
+from rest_framework import generics, serializers, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import stripe
-from django.conf import settings
+
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import CustomPageNumberPagination
 from materials.permissions import IsOwner, IsOwnerOrModerator
 from materials.serializer import CourseSerializer, LessonSerializer, PaymentSerializer
-from materials.services import create_stripe_product, create_stripe_price, create_strip_session
+from materials.services import (create_strip_session, create_stripe_price, create_stripe_product,
+                                notification_subscribers)
 from users.models import Payments
 
 
@@ -30,6 +32,10 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    def perform_update(self, serializer):
+        course = serializer.save()
+        notification_subscribers(course)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
@@ -63,6 +69,10 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwnerOrModerator]
+
+    def perform_update(self, serializer):
+        lesson = serializer.save()
+        notification_subscribers(lesson.course)
 
 
 class LessonDeleteAPIView(generics.DestroyAPIView):
@@ -127,10 +137,7 @@ class PaymentViewSet(viewsets.ModelViewSet):
                     "user_id": self.request.user.id,
                 },
             )
-            payment = serializer.save(
-                user=self.request.user,
-                payment_method=Payments.CREDIT_CARD
-            )
+            payment = serializer.save(user=self.request.user, payment_method=Payments.CREDIT_CARD)
             payment.stripe_session_id = session.pk
             payment.save()
             return Response({"session": session}, status=status.HTTP_201_CREATED)
@@ -144,6 +151,7 @@ class PaymentSuccessView(APIView):
     def get(self, request):
         session_id = request.GET.get("session_id")
         return Response({"message": "Оплата прошла успешно!", "session_id": session_id})
+
 
 class PaymentCancelView(APIView):
     def get(self, request):

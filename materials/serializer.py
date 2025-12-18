@@ -20,7 +20,6 @@ class CourseSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source="owner.username")
     is_subscribed = serializers.SerializerMethodField()
 
-
     class Meta:
         model = Course
         # exclude = ("preview",)
@@ -39,6 +38,7 @@ class CourseSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             return Subscription.objects.filter(user=request.user, course=obj).exists()
         return False
+
 
 class PaymentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)

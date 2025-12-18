@@ -1,6 +1,6 @@
-from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -17,17 +17,13 @@ class MaterialsTest(APITestCase):
         self.owner = User.objects.create_user(email="owner@test.com", password="123", username="owner")
         self.student = User.objects.create_user(email="student@test.com", password="123", username="student")
 
-        self.course = Course.objects.create(
-            name="Тестовый курс",
-            description="Описание",
-            owner=self.owner
-        )
+        self.course = Course.objects.create(name="Тестовый курс", description="Описание", owner=self.owner)
         self.lesson = Lesson.objects.create(
             name="Тестовый урок",
             description="Описание урока",
             course=self.course,
             owner=self.owner,
-            video_url="https://www.youtube.com/watch?v=12345"
+            video_url="https://www.youtube.com/watch?v=12345",
         )
 
     def test_create_lesson_as_owner(self):
@@ -37,7 +33,7 @@ class MaterialsTest(APITestCase):
             "name": "Новый урок",
             "description": "Тест",
             "course": self.course.id,
-            "video_url": "https://www.youtube.com/watch?v=abc123"
+            "video_url": "https://www.youtube.com/watch?v=abc123",
         }
         response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
