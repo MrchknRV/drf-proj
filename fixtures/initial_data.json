@@ -1,0 +1,173 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$randomsalt1$hashedpassword1=",
+      "last_login": null,
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2025-12-18T10:00:00Z",
+      "email": "admin@example.com",
+      "first_name": "Админ",
+      "last_name": "Главный",
+      "username": "admin123",
+      "avatar": null,
+      "phone_number": "+79991234567",
+      "country": "Russia"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$randomsalt2$hashedpassword2=",
+      "last_login": null,
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-12-18T10:05:00Z",
+      "email": "teacher@example.com",
+      "first_name": "Иван",
+      "last_name": "Преподаватель",
+      "username": "user123",
+      "avatar": null,
+      "phone_number": "+79997654321",
+      "country": "Russia"
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$randomsalt3$hashedpassword3=",
+      "last_login": null,
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2025-12-18T10:10:00Z",
+      "email": "student@example.com",
+      "first_name": "Анна",
+      "last_name": "Студентка",
+      "username": "student123",
+      "avatar": null,
+      "phone_number": "+79995554433",
+      "country": "Russia"
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 1,
+    "fields": {
+      "name": "Python для начинающих",
+      "preview": null,
+      "description": "Основы программирования на Python. Без запрещённых ссылок.",
+      "owner": 2,
+      "last_update": "2025-12-18T12:00:00Z"
+    }
+  },
+  {
+    "model": "materials.course",
+    "pk": 2,
+    "fields": {
+      "name": "Django REST Framework",
+      "preview": null,
+      "description": "Создание API на Django. Только YouTube ссылки разрешены.",
+      "owner": 2,
+      "last_update": "2025-12-18T14:00:00Z"
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "name": "Введение в Python",
+      "description": "Переменные, типы данных.",
+      "preview": null,
+      "video_url": "https://www.youtube.com/watch?v=python-intro",
+      "owner": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 2,
+    "fields": {
+      "course": 1,
+      "name": "Условные операторы",
+      "description": "if, else, elif.",
+      "preview": null,
+      "video_url": "https://youtu.be/python-if",
+      "owner": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 3,
+    "fields": {
+      "course": 1,
+      "name": "Циклы",
+      "description": "for и while.",
+      "preview": null,
+      "video_url": "https://www.youtube.com/watch?v=python-loops",
+      "owner": 2
+    }
+  },
+  {
+    "model": "materials.lesson",
+    "pk": 4,
+    "fields": {
+      "course": 2,
+      "name": "Модели и миграции",
+      "description": "Создание моделей.",
+      "preview": null,
+      "video_url": "https://youtube.com/django-models",
+      "owner": 2
+    }
+  },
+  {
+    "model": "materials.subscription",
+    "pk": 1,
+    "fields": {
+      "user": 3,
+      "course": 1,
+      "created_at": "2025-12-18T15:00:00Z"
+    }
+  },
+  {
+    "model": "materials.subscription",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "course": 2,
+      "created_at": "2025-12-18T15:05:00Z"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 1,
+    "fields": {
+      "user": 3,
+      "payment_date": "2025-12-18T16:00:00Z",
+      "paid_course": 1,
+      "paid_lesson": null,
+      "payment_amount": 9900,
+      "payment_method": "Credit Card",
+      "stripe_session_id": "cs_test_abc123"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "payment_date": "2025-12-18T16:30:00Z",
+      "paid_course": null,
+      "paid_lesson": 2,
+      "payment_amount": 1500,
+      "payment_method": "Cash",
+      "stripe_session_id": null
+    }
+  }
+]

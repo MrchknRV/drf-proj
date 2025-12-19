@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 
 class IsModerator(BasePermission):
@@ -7,6 +7,7 @@ class IsModerator(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return self.has_permission(request, view)
+
 
 class IsOwnerOrModerator(BasePermission):
     def has_permission(self, request, view):
@@ -17,9 +18,9 @@ class IsOwnerOrModerator(BasePermission):
             return True
 
         return (
-            request.user.groups.filter(name="Moderator").exists() or
-            (hasattr(obj, 'owner') and obj.owner == request.user) or
-            (hasattr(obj, 'user') and obj.user == request.user)
+            request.user.groups.filter(name="Moderator").exists()
+            or (hasattr(obj, "owner") and obj.owner == request.user)
+            or (hasattr(obj, "user") and obj.user == request.user)
         )
 
 
@@ -27,5 +28,4 @@ class IsOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
             return True
-        return hasattr(obj, 'owner') and obj.owner == request.user or \
-               hasattr(obj, 'user') and obj.user == request.user
+        return hasattr(obj, "owner") and obj.owner == request.user or hasattr(obj, "user") and obj.user == request.user
